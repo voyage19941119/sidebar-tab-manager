@@ -771,20 +771,21 @@ async function handleGroupContextMenuAction(e) {
 }
 
 // 处理颜色选择
-function handleColorSelect(e) {
+async function handleColorSelect(e) {
   const colorItem = e.target.closest('.color-item');
   if (!colorItem) return;
   
   e.stopPropagation();
   
   const color = colorItem.dataset.color;
-  chrome.runtime.sendMessage({
+  await chrome.runtime.sendMessage({
     type: 'CHANGE_GROUP_COLOR',
     groupId: contextMenuGroupId,
     color
   });
   
   hideAllMenus();
+  await loadTabs();
 }
 
 // 显示重命名对话框
