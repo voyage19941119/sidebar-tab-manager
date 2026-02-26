@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>标签管理器</title>
+  <link rel="stylesheet" href="sidebar.css">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h1 class="title">
+        <svg class="title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="7" height="7" rx="1"></rect>
+          <rect x="14" y="3" width="7" height="7" rx="1"></rect>
+          <rect x="3" y="14" width="7" height="7" rx="1"></rect>
+          <rect x="14" y="14" width="7" height="7" rx="1"></rect>
+        </svg>
+        标签管理器
+      </h1>
+      <div class="tab-count" id="tabCount">0 个标签页</div>
+    </header>
+    
+    <div class="search-box">
+      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"></circle>
+        <path d="M21 21l-4.35-4.35"></path>
+      </svg>
+      <input type="text" id="searchInput" placeholder="搜索标签页..." />
+    </div>
+    
+    <main class="tab-list" id="tabList">
+      <!-- 标签页列表将在这里动态渲染 -->
+    </main>
+    <div class="selection-count" id="selectionCount"></div>
+  </div>
+  
+  <!-- 右键菜单 -->
+  <div class="context-menu" id="contextMenu">
+    <div class="context-menu-label" id="contextMenuLabel" style="display: none;"></div>
+    <div class="context-menu-item" data-action="reload">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M1 4v6h6"></path>
+        <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+      </svg>
+      <span id="reloadText">刷新</span>
+    </div>
+    <div class="context-menu-item" data-action="copyLink">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+      </svg>
+      <span id="copyLinkText">复制链接</span>
+    </div>
+    <div class="context-menu-item" data-action="pin" id="pinItem">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 2v8"></path>
+        <circle cx="12" cy="14" r="4"></circle>
+        <path d="M12 18v4"></path>
+      </svg>
+      <span id="pinText">固定标签页</span>
+    </div>
+    <div class="context-menu-divider"></div>
+    <div class="context-menu-item" data-action="createNewGroup">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+        <line x1="12" y1="11" x2="12" y2="17"></line>
+        <line x1="9" y1="14" x2="15" y2="14"></line>
+      </svg>
+      <span id="createGroupText">创建新分组</span>
+    </div>
+    <div class="context-menu-item has-submenu" data-action="addToGroup" id="addToGroupItem" style="display: none;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+        <polyline points="9 11 12 14 22 4"></polyline>
+      </svg>
+      添加到已有分组
+      <svg class="submenu-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="9 18 15 12 9 6"></polyline>
+      </svg>
+      <div class="context-submenu" id="groupSubmenu"></div>
+    </div>
+    <div class="context-menu-item" data-action="removeFromGroup" id="removeFromGroupItem" style="display: none;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+        <line x1="9" y1="14" x2="15" y2="14"></line>
+      </svg>
+      从分组中移除
+    </div>
+    <div class="context-menu-divider"></div>
+    <div class="context-menu-item danger" data-action="close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+      <span id="closeText">关闭标签页</span>
+    </div>
+  </div>
+  
+  <!-- 分组右键菜单 -->
+  <div class="context-menu" id="groupContextMenu">
+    <div class="context-menu-item" data-action="renameGroup">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+      </svg>
+      重命名分组
+    </div>
+    <div class="context-menu-item has-submenu" data-action="changeColor">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <circle cx="12" cy="12" r="4" fill="currentColor"></circle>
+      </svg>
+      更改颜色
+      <svg class="submenu-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="9 18 15 12 9 6"></polyline>
+      </svg>
+      <div class="context-submenu color-submenu" id="colorSubmenu">
+        <div class="color-grid">
+          <div class="color-item" data-color="grey" title="灰色"><div class="color-dot grey"></div></div>
+          <div class="color-item" data-color="blue" title="蓝色"><div class="color-dot blue"></div></div>
+          <div class="color-item" data-color="red" title="红色"><div class="color-dot red"></div></div>
+          <div class="color-item" data-color="yellow" title="黄色"><div class="color-dot yellow"></div></div>
+          <div class="color-item" data-color="green" title="绿色"><div class="color-dot green"></div></div>
+          <div class="color-item" data-color="pink" title="粉色"><div class="color-dot pink"></div></div>
+          <div class="color-item" data-color="purple" title="紫色"><div class="color-dot purple"></div></div>
+          <div class="color-item" data-color="cyan" title="青色"><div class="color-dot cyan"></div></div>
+          <div class="color-item" data-color="orange" title="橙色"><div class="color-dot orange"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="context-menu-divider"></div>
+    <div class="context-menu-item" data-action="collapseGroup">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
+      <span id="collapseText">折叠分组</span>
+    </div>
+    <div class="context-menu-item" data-action="ungroupTabs">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+        <line x1="9" y1="3" x2="9" y2="21"></line>
+      </svg>
+      取消分组
+    </div>
+    <div class="context-menu-divider"></div>
+    <div class="context-menu-item danger" data-action="closeGroupTabs">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+      关闭分组中的所有标签页
+    </div>
+  </div>
+  
+  <!-- 重命名输入框 -->
+  <div class="rename-dialog" id="renameDialog">
+    <input type="text" id="renameInput" placeholder="输入分组名称" />
+    <div class="rename-actions">
+      <button class="rename-btn cancel" id="renameCancel">取消</button>
+      <button class="rename-btn confirm" id="renameConfirm">确定</button>
+    </div>
+  </div>
+  
+  <script src="sidebar.js"></script>
+</body>
+</html>
+
