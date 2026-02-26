@@ -66,7 +66,7 @@ git clone https://github.com/user/sidebar-tab-manager.git
 |--------|------|
 | `⌘+Shift+S` | 打开侧边栏 |
 | `Ctrl+Tab` | 切换到上一次访问的标签页 |
-| `⌘+Shift+G` | 展开/折叠所有分组 |
+| `Ctrl+G` | 展开/折叠所有分组 |
 | `⌘+Click` | 多选标签页 |
 | `Shift+Click` | 范围选择标签页 |
 

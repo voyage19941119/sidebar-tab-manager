@@ -66,7 +66,7 @@ git clone https://github.com/user/sidebar-tab-manager.git
 |----------|--------|
 | `⌘+Shift+S` | Open sidebar |
 | `Ctrl+Tab` | Switch to previously visited tab |
-| `⌘+Shift+G` | Toggle all groups collapse/expand |
+| `Ctrl+G` | Toggle all groups collapse/expand |
 | `⌘+Click` | Multi-select tabs |
 | `Shift+Click` | Range-select tabs |
 

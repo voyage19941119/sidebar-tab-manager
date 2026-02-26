@@ -248,9 +248,10 @@ function setupEventListeners() {
       switchToPreviousTab();
     }
     
-    // Cmd+Shift+G 展开/关闭所有分组
-    if (e.key === 'G' && e.metaKey && e.shiftKey) {
+    // Ctrl+G 展开/关闭所有分组
+    if ((e.key === 'g' || e.key === 'G') && e.ctrlKey && !e.metaKey) {
       e.preventDefault();
+      e.stopPropagation();
       toggleAllGroups();
     }
   });
@@ -316,13 +317,15 @@ async function toggleAllGroups() {
   const shouldCollapse = hasExpandedGroup;
   
   // 更新所有分组
-  for (const group of tabData.groups) {
-    await chrome.runtime.sendMessage({
+  const promises = tabData.groups.map(group =>
+    chrome.runtime.sendMessage({
       type: 'TOGGLE_GROUP_COLLAPSED',
       groupId: group.id,
       collapsed: shouldCollapse
-    });
-  }
+    })
+  );
+  await Promise.all(promises);
+  await loadTabs();
 }
 
 // 处理标签页点击
