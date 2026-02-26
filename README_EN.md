@@ -60,6 +60,8 @@ git clone https://github.com/user/sidebar-tab-manager.git
    - Go to `chrome://settings/appearance`
    - Find "Side panel position" → Select "Left"
 
+> **Note:** This extension has only been tested on macOS. It should also work on Windows / Linux, but some keyboard shortcuts may need to be adjusted (customizable at `chrome://extensions/shortcuts`).
+
 ## ⌨️ Keyboard Shortcuts
 
 | Shortcut | Action |

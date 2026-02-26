@@ -60,6 +60,8 @@ git clone https://github.com/user/sidebar-tab-manager.git
    - 打开 `chrome://settings/appearance`
    - 找到「侧边栏位置」→ 选择「左侧」
 
+> **注意：** 本项目仅在 macOS 环境下测试过。Windows / Linux 应该也可正常使用，但部分快捷键可能需要自行调整（可在 `chrome://extensions/shortcuts` 中修改）。
+
 ## ⌨️ 快捷键
 
 | 快捷键 | 功能 |
